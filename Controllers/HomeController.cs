@@ -13,17 +13,13 @@ namespace gocodelab.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult CadastroPaciente()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Vacinacao()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
