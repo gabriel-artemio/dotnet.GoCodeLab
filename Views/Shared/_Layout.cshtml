@@ -19,12 +19,10 @@
                 </button>
                 @Html.ActionLink("GoCode Lab", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse" id="navbarNavDropdown">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Cadastro de Paciente", "CadastroPaciente", "Home")</li>
+                    <li>@Html.ActionLink("Cadastro de Paciente", "CadastroPaciente", "Cadastro")</li>
                     <li>@Html.ActionLink("Vacinação", "Vacinacao", "Home")</li>
-                    @*<li>@Html.ActionLink("Sobre", "About", "Home")</li>*@
-                    @*<li>@Html.ActionLink("Contato", "Contact", "Home")</li>*@
                 </ul>
             </div>
         </div>
