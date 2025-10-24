@@ -1,0 +1,25 @@
+﻿@model gocodelab.Models.Paciente
+
+@{
+    ViewBag.Title = "Editar Paciente";
+}
+
+<h2>Editar Paciente</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.cd_paciente)
+
+    <div class="form-group">
+        <label>Nome</label>
+        @Html.TextBoxFor(m => m.nm_paciente, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>CPF</label>
+        @Html.TextBoxFor(m => m.cpf, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="@Url.Action("Index", "Paciente")" class="btn btn-secondary">Cancelar</a>
+}

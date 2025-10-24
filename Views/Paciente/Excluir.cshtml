@@ -1,0 +1,27 @@
+﻿@model gocodelab.Models.Paciente
+
+@{
+    ViewBag.Title = "Excluir Paciente";
+}
+
+<h2>Excluir Paciente</h2>
+
+<h4>Tem certeza que deseja excluir este paciente?</h4>
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>Cód.</dt>
+    <dd>@Model.cd_paciente</dd>
+
+    <dt>Nome</dt>
+    <dd>@Model.nm_paciente</dd>
+
+    <dt>CPF</dt>
+    <dd>@Model.cpf</dd>
+</dl>
+
+@using (Html.BeginForm("Delete", "Paciente", new { id = Model.cd_paciente }, FormMethod.Post))
+{
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a href="@Url.Action("Index", "Paciente")" class="btn btn-secondary">Cancelar</a>
+}

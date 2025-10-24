@@ -1,0 +1,78 @@
+﻿@model IEnumerable<gocodelab.Models.Paciente>
+
+@{
+    ViewBag.Title = "Pacientes";
+    int paginaAtual = ViewBag.PaginaAtual ?? 1;
+    int totalPaginas = ViewBag.TotalPaginas ?? 1;
+}
+
+<h2>Pacientes</h2>
+
+<form method="get" action="@Url.Action("Index")" class="form-inline mb-3">
+    <input type="text" name="busca" value="@ViewBag.Busca" class="form-control" placeholder="Buscar por nome..." />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Limpar</a>
+</form>
+<br />
+
+<p><a href="@Url.Action("Criar")" class="btn btn-success">Novo Paciente</a></p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Nenhum paciente encontrado.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Ações</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.nm_paciente</td>
+                <td>@item.cpf</td>
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new { id = item.cd_paciente }) |
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.cd_paciente }) |
+                    @Html.ActionLink("Excluir", "Excluir", new { id = item.cd_paciente })
+                </td>
+            </tr>
+        }
+    </table>
+
+    <!-- 📄 Paginação -->
+    <nav>
+        <ul class="pagination">
+            @if (paginaAtual > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { busca = ViewBag.Busca, pagina = paginaAtual - 1 })">« Anterior</a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPaginas; i++)
+            {
+                if (i == paginaAtual)
+                {
+                    <li class="page-item active"><span class="page-link">@i</span></li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { busca = ViewBag.Busca, pagina = i })">@i</a>
+                    </li>
+                }
+            }
+
+            @if (paginaAtual < totalPaginas)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { busca = ViewBag.Busca, pagina = paginaAtual + 1 })">Próximo »</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
