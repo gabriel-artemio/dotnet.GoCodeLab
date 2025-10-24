@@ -26,24 +26,36 @@ else
     <table class="table table-striped">
         <tr>
             <th>Nome</th>
+            <th>Data Nascimento</th>
+            <th>Sexo</th>
             <th>CPF</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
             <th>Ações</th>
         </tr>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@item.nm_paciente</td>
-                <td>@item.cpf</td>
-                <td>
-                    @Html.ActionLink("Editar", "Editar", new { id = item.cd_paciente }) |
-                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.cd_paciente }) |
-                    @Html.ActionLink("Excluir", "Excluir", new { id = item.cd_paciente })
-                </td>
-            </tr>
+    <tr>
+        <td>@item.nm_paciente</td>
+        <td>@item.data_nascimento.ToString("dd/MM/yyyy")</td>
+        <td>@item.sexo</td>
+        <td>@String.Format("{0:000\\.000\\.000\\-00}", Convert.ToInt64(item.cpf))</td>
+        <td>@item.endereco</td>
+        <td>
+            @String.Format("({0:00}) {1:0000\\-0000}",
+            Convert.ToInt64(item.telefone.Substring(0, 2)),
+            Convert.ToInt64(item.telefone.Substring(2)))
+            </td>
+        <td>
+            @Html.ActionLink("Editar", "Editar", new { id = item.cd_paciente }) |
+            @Html.ActionLink("Detalhes", "Detalhes", new { id = item.cd_paciente }) |
+            @Html.ActionLink("Excluir", "Excluir", new { id = item.cd_paciente })
+        </td>
+    </tr>
         }
     </table>
 
-    <!-- 📄 Paginação -->
+    <!-- Paginação -->
     <nav>
         <ul class="pagination">
             @if (paginaAtual > 1)

@@ -30,7 +30,7 @@ namespace gocodelab.DAL
 
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
-                sql = "SELECT cd_paciente, nm_paciente, cpf FROM paciente";
+                sql = "SELECT cd_paciente, nm_paciente, data_nascimento, sexo, cpf, endereco, telefone FROM paciente";
 
                 if (id > 0)
                 {
@@ -55,7 +55,11 @@ namespace gocodelab.DAL
                     {
                         cd_paciente = Convert.ToInt32(dr["cd_paciente"]),
                         nm_paciente = dr["nm_paciente"].ToString(),
-                        cpf = dr["cpf"].ToString()
+                        data_nascimento = Convert.ToDateTime(dr["data_nascimento"]),
+                        sexo = dr["sexo"].ToString(),
+                        cpf = dr["cpf"].ToString(),
+                        endereco = dr["endereco"].ToString(),
+                        telefone = dr["telefone"].ToString()
                     });
                 }
             }
