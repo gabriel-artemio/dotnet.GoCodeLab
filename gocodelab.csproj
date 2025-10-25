@@ -168,14 +168,26 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BLL\AplicacaoBLL.cs" />
     <Compile Include="BLL\PacienteBLL.cs" />
+    <Compile Include="BLL\ProfissionalBLL.cs" />
+    <Compile Include="BLL\VacinaBLL.cs" />
+    <Compile Include="Controllers\AplicacaoVacinaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PacienteController.cs" />
+    <Compile Include="Controllers\ProfissionalController.cs" />
+    <Compile Include="Controllers\VacinaController.cs" />
+    <Compile Include="DAL\AplicacaoDAL.cs" />
     <Compile Include="DAL\PacienteDAL.cs" />
+    <Compile Include="DAL\ProfissionalDAL.cs" />
+    <Compile Include="DAL\VacinaDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Aplicacao.cs" />
     <Compile Include="Models\Paciente.cs" />
+    <Compile Include="Models\Profissional.cs" />
+    <Compile Include="Models\Vacina.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +230,10 @@
     <Content Include="Views\Paciente\Criar.cshtml" />
     <Content Include="Views\Paciente\Editar.cshtml" />
     <Content Include="Views\Paciente\Excluir.cshtml" />
+    <Content Include="Views\Profissional\Index.cshtml" />
+    <Content Include="Views\Vacina\Index.cshtml" />
+    <Content Include="Views\AplicacaoVacina\Index.cshtml" />
+    <Content Include="Views\AplicacaoVacina\HistoricoVacinacao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

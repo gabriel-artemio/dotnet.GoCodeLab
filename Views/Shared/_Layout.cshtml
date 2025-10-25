@@ -17,16 +17,32 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("GoCode Lab", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("GoCode Lab", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse" id="navbarNavDropdown">
+
+            <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Pacientes", "Index", "Paciente")</li>
-                    <li>@Html.ActionLink("Vacinação", "Vacinacao", "Home")</li>
+                    <li>@Html.ActionLink("Início", "Index", "Home")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Parametrização <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Pacientes", "Index", "Paciente")</li>
+                            <li>@Html.ActionLink("Profisionais", "Index", "Profissional")</li>
+                            <li>@Html.ActionLink("Cadastro de Vacinas", "Index", "Vacina")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Configurações", "Index", "Config")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Vacinação", "Index", "AplicacaoVacina")</li>
+                    <li>@Html.ActionLink("Histórico de Vacinação", "HistoricoVacinacao", "AplicacaoVacina")</li>
+                    <li>@Html.ActionLink("Geladeira", "Index", "Geladeira")</li>
                 </ul>
             </div>
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
