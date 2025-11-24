@@ -14,9 +14,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Private><Home /></Private>} />
-        <Route path="/pacientes" element={<Private><Pacientes /></Private>} />
-        <Route path="/geladeira" element={<Private><Geladeira /></Private>} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/pacientes" element={<Pacientes />} />
+        <Route path="/geladeira" element={<Geladeira />} />
       </Routes>
     </BrowserRouter>
   );

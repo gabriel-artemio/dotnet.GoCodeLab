@@ -1,54 +1,59 @@
+import { useEffect, useState } from "react";
 import NavbarTop from "../components/NavbarTop";
-import { Line, Bar } from "react-chartjs-2";
-import { Chart as ChartJS, LineElement, BarElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, } from "chart.js";
-
-ChartJS.register(
-  LineElement,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Tooltip,
-  Legend
-);
+import { apiInteligenciaArtificial } from "../api";
 
 export default function Geladeira() {
-  const temperaturaMax = 7.5;
-  const temperaturaMin = 3.2;
+  const [temperaturaMax, setTemperaturaMax] = useState(null);
+  const [temperaturaMin, setTemperaturaMin] = useState(null);
   const totalAnomalias = 4;
-  const status = "Operando normalmente";
 
-  const tempData = {
-    labels: ["08h", "10h", "12h", "14h", "16h", "18h"],
-    datasets: [
-      {
-        label: "Temperatura (°C)",
-        data: [4.2, 5.1, 6.8, 7.5, 6.9, 5.4],
-        borderWidth: 2,
-        tension: 0.3,
-      },
-    ],
+  const [graficoAbertura, setGraficoAbertura] = useState(null);
+  const [graficoEfeito, setGraficoEfeito] = useState(null);
+  const [graficoCalor, setGraficoCalor] = useState(null);
+
+  const [status, setStatus] = useState("Operando normalmente");
+
+  const fetchData = async (endpoint) => {
+    const res = await apiInteligenciaArtificial.get(endpoint);
+    return res.data;
   };
 
-  const anomaliaData = {
-    labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-    datasets: [
-      {
-        label: "Anomalias",
-        data: [0, 1, 0, 2, 0, 1, 0],
-        borderWidth: 2,
-      },
-    ],
-  };
+  useEffect(() => {
+    const load = async () => {
+      const abertura = await fetchData("/grafico/aberturas");
+      setGraficoAbertura(abertura);
+
+      const efeito = await fetchData("/grafico/efeito");
+      setGraficoEfeito(efeito);
+
+      const calor = await fetchData("/grafico/calor");
+      setGraficoCalor(calor);
+
+      console.log(abertura, efeito, calor);
+
+      const alertas = await fetchData("/alertas");
+      const tempMax = Math.max(
+        ...alertas.map((item) => Math.max(item.temp1, item.temp2))
+      );
+      const tempMin = Math.min(
+        ...alertas.map((item) => Math.min(item.temp1, item.temp2))
+      );
+      setTemperaturaMax(tempMax);
+      setTemperaturaMin(tempMin);
+    };
+
+    load();
+  }, []);
 
   return (
     <>
       <NavbarTop />
 
       <div className="container mt-4">
-        <h3 className="mb-3">Dashboard - Geladeira</h3>
+        <div className="d-flex justify-content-between align-items-center">
+          <h3 className="mb-3">Dashboard - Geladeira</h3>
+        </div>
 
-        {/* ---------- CARDS ---------- */}
         <div className="row">
           <div className="col-md-3 mb-3">
             <div className="card shadow-sm">
@@ -87,19 +92,55 @@ export default function Geladeira() {
           </div>
         </div>
 
-        {/* ---------- GRÁFICO DE LINHA ---------- */}
         <div className="card shadow-sm mt-4">
           <div className="card-body">
-            <h5 className="mb-3">Temperatura nas Últimas Horas</h5>
-            <Line data={tempData} />
+            {graficoAbertura && (
+              <>
+                <h5 className="mb-3">{graficoAbertura.titulo}</h5>
+                <div className="w-100">
+                  <img
+                    src={`data:image/png;base64,${graficoAbertura.imagem_base64}`}
+                    alt="Gráfico 1"
+                    className="w-100"
+                    width={100}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {/* ---------- GRÁFICO DE BARRAS ---------- */}
+        <div className="card shadow-sm mt-4">
+          <div className="card-body">
+            {graficoEfeito && (
+              <>
+                <h5 className="mb-3">{graficoEfeito.titulo}</h5>
+                <div className="w-100">
+                  <img
+                    src={`data:image/png;base64,${graficoEfeito.imagem_base64}`}
+                    alt="Gráfico 2"
+                    className="w-100"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
         <div className="card shadow-sm mt-4 mb-5">
           <div className="card-body">
-            <h5 className="mb-3">Anomalias por Dia</h5>
-            <Bar data={anomaliaData} />
+            {graficoCalor && (
+              <>
+                <h5 className="mb-3">{graficoCalor.titulo}</h5>
+                <div className="w-100">
+                  <img
+                    src={`data:image/png;base64,${graficoCalor.imagem_base64}`}
+                    alt="Gráfico 3"
+                    className="w-100"
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
