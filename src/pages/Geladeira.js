@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import NavbarTop from "../components/NavbarTop";
 import { apiInteligenciaArtificial } from "../api";
+import Plot from "react-plotly.js";
 
 export default function Geladeira() {
   const [temperaturaMax, setTemperaturaMax] = useState(null);
   const [temperaturaMin, setTemperaturaMin] = useState(null);
-  const totalAnomalias = 4;
+  const [totalAnomalias, setTotalAnomalia] = useState(null);
 
   const [graficoAbertura, setGraficoAbertura] = useState(null);
   const [graficoEfeito, setGraficoEfeito] = useState(null);
   const [graficoCalor, setGraficoCalor] = useState(null);
+  const [graficoOperacoes, setGraficoOperacoes] = useState(null);
 
   const [status, setStatus] = useState("Operando normalmente");
 
@@ -29,20 +31,61 @@ export default function Geladeira() {
       const calor = await fetchData("/grafico/calor");
       setGraficoCalor(calor);
 
-      console.log(abertura, efeito, calor);
-
       const alertas = await fetchData("/alertas");
+
       const tempMax = Math.max(
         ...alertas.map((item) => Math.max(item.temp1, item.temp2))
       );
       const tempMin = Math.min(
         ...alertas.map((item) => Math.min(item.temp1, item.temp2))
       );
+
+      const anomalias = alertas.reduce(
+        (acc, atual) => acc + atual.anomalias.length,
+        0
+      );
+
+      // 👉 carrega o gráfico de operações somente uma vez
+      const operacoes = await fetchData("/grafico/operacoes");
+      setGraficoOperacoes(operacoes.data);
+
       setTemperaturaMax(tempMax);
       setTemperaturaMin(tempMin);
+      setTotalAnomalia(anomalias);
     };
 
     load();
+
+    const interval = setInterval(async () => {
+      const abertura = await fetchData("/grafico/aberturas");
+      setGraficoAbertura(abertura);
+
+      const efeito = await fetchData("/grafico/efeito");
+      setGraficoEfeito(efeito);
+
+      const calor = await fetchData("/grafico/calor");
+      setGraficoCalor(calor);
+
+      const alertas = await fetchData("/alertas");
+
+      const tempMax = Math.max(
+        ...alertas.map((item) => Math.max(item.temp1, item.temp2))
+      );
+      const tempMin = Math.min(
+        ...alertas.map((item) => Math.min(item.temp1, item.temp2))
+      );
+
+      const anomalias = alertas.reduce(
+        (acc, atual) => acc + atual.anomalias.length,
+        0
+      );
+
+      setTemperaturaMax(tempMax);
+      setTemperaturaMin(tempMin);
+      setTotalAnomalia(anomalias);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -53,7 +96,6 @@ export default function Geladeira() {
         <div className="d-flex justify-content-between align-items-center">
           <h3 className="mb-3">Dashboard - Geladeira</h3>
         </div>
-
         <div className="row">
           <div className="col-md-3 mb-3">
             <div className="card shadow-sm">
@@ -91,7 +133,6 @@ export default function Geladeira() {
             </div>
           </div>
         </div>
-
         <div className="card shadow-sm mt-4">
           <div className="card-body">
             {graficoAbertura && (
@@ -109,7 +150,6 @@ export default function Geladeira() {
             )}
           </div>
         </div>
-
         <div className="card shadow-sm mt-4">
           <div className="card-body">
             {graficoEfeito && (
@@ -126,7 +166,6 @@ export default function Geladeira() {
             )}
           </div>
         </div>
-
         <div className="card shadow-sm mt-4 mb-5">
           <div className="card-body">
             {graficoCalor && (
@@ -137,6 +176,26 @@ export default function Geladeira() {
                     src={`data:image/png;base64,${graficoCalor.imagem_base64}`}
                     alt="Gráfico 3"
                     className="w-100"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="card shadow-sm mt-4 mb-5">
+          <div className="card-body">
+            {graficoOperacoes && (
+              <>
+                <h5 className="mb-3">Gráfico de Operações</h5>
+                <div className="w-100 bg-dark h-100">
+                  <Plot
+                    data={graficoOperacoes}
+                    className="w-100"
+                    layout={{
+                      title: "Temperatura (°C)",
+                      xaxis: { title: "Hora" },
+                      yaxis: { title: "°C" },
+                    }}
                   />
                 </div>
               </>
