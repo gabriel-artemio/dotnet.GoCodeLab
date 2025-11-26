@@ -334,7 +334,7 @@ export default function Geladeira() {
                     </tr>
                   )}
                 </tbody>
-              </table>*/
+              </table>
 
               <nav className="mt-3">
                 <ul className="pagination justify-content-center">
