@@ -48,9 +48,6 @@ Exemplo de body:
 
 ## 📌 Melhorias futuras
 * Persistência com banco de dados
-* Retry e Dead Letter Queue (DLQ)
-* Mensageria com Exchange (Direct, Fanout, Topic)
-* Logs com Serilog
 * Autenticação JWT
 
 
